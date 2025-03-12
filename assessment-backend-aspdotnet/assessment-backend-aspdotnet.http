@@ -1,0 +1,6 @@
+@assessment_backend_aspdotnet_HostAddress = http://localhost:5151
+
+GET {{assessment_backend_aspdotnet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
