@@ -1,6 +1,33 @@
+using assessment_backend_aspdotnet.CustomConfig;
+using assessment_backend_aspdotnet.DataAccess.Context;
+using assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository;
+using assessment_backend_aspdotnet.DataAccess.Repositories.StudentRepository;
+using assessment_backend_aspdotnet.Interfaces.Manager;
+using assessment_backend_aspdotnet.Interfaces.ManagerInterfaces;
+using assessment_backend_aspdotnet.Interfaces.Repository;
+using assessment_backend_aspdotnet.Managers.ClassManager;
+using assessment_backend_aspdotnet.Managers.StudentManager;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+//Automapper
+IMapper mapper = MappingConfig.RegisterMappings().CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 // Add services to the container.
+builder.Services.AddDbContext<AssessmentContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("DBConnection")));
+
+//Add Repositories
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IClassRepository, ClassRepository>();
+
+//Add Managers
+builder.Services.AddScoped<IStudentManager, StudentManager>();
+builder.Services.AddScoped<IClassManager, ClassManager>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
