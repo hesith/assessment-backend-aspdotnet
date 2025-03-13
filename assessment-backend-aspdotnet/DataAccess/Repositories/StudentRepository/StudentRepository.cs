@@ -18,7 +18,7 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.StudentRepository
             _mapper = mapper;
         }
 
-        public async Task<StudentDto> CreateStudent(StudentDto student)
+        public async Task<StudentDto> AddStudent(StudentDto student)
         {
             Student convDbObj = _mapper.Map<Student>(student);
 

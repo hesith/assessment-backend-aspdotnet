@@ -6,6 +6,6 @@ namespace assessment_backend_aspdotnet.Interfaces.ManagerInterfaces
 {
     public interface IStudentManager
     {
-        Task<BaseResponse<StudentResponseDto>> CreateStudent(StudentDto student);
+        Task<BaseResponse<StudentResponseDto>> AddStudent(StudentDto student);
     }
 }

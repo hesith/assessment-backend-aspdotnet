@@ -18,14 +18,26 @@ namespace assessment_backend_aspdotnet.Controllers
         }
 
         [HttpPost("classes")]
-        public async Task<IActionResult> CreateClass([FromBody] ClassDto classDto)
+        public async Task<IActionResult> AddClass([FromBody] ClassDto classDto)
         {
             if (classDto == null)
             {
                 return BadRequest("Invalid Class Data");
             }
 
-            BaseResponse<ClassResponseDto> result = await _classManager.CreateClass(classDto);
+            BaseResponse<ClassResponseDto> result = await _classManager.AddClass(classDto);
+            return Ok(result);
+        }
+
+        [HttpGet("classes/{id}")]
+        public async Task<IActionResult> GetClassById(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest("Invalid Class Data");
+            }
+
+            BaseResponse<ClassResponseDto> result = await _classManager.GetClassById(id);
             return Ok(result);
         }
     }

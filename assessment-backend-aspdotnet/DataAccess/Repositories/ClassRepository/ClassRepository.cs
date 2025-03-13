@@ -3,6 +3,7 @@ using assessment_backend_aspdotnet.DataAccess.Entities;
 using assessment_backend_aspdotnet.Interfaces.Repository;
 using assessment_backend_aspdotnet.Model.Dto;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository
 {
@@ -16,7 +17,7 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository
             _mapper = mapper;
         }
 
-        public async Task<ClassDto> CreateClass(ClassDto cls)
+        public async Task<ClassDto> AddClass(ClassDto cls)
         {
             Class convDbObj = _mapper.Map<Class>(cls);
 
@@ -27,6 +28,11 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository
             await _dbContext.SaveChangesAsync();
 
             return cls;
+        }
+
+        public async Task<Class?> GetClassById(int id)
+        {
+            return await _dbContext.Classes.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
     }
 }

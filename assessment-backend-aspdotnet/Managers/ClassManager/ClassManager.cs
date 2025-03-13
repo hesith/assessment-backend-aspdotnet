@@ -1,8 +1,11 @@
-﻿using assessment_backend_aspdotnet.Interfaces.Manager;
+﻿using assessment_backend_aspdotnet.CustomConfig;
+using assessment_backend_aspdotnet.DataAccess.Entities;
+using assessment_backend_aspdotnet.Interfaces.Manager;
 using assessment_backend_aspdotnet.Interfaces.Repository;
 using assessment_backend_aspdotnet.Model.Dto;
 using assessment_backend_aspdotnet.Model.Response;
 using AutoMapper;
+using static assessment_backend_aspdotnet.CustomConfig.UserDefinedException;
 
 namespace assessment_backend_aspdotnet.Managers.ClassManager
 {
@@ -16,7 +19,7 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
             _classRepository = classRepository;
         }
 
-        public async Task<BaseResponse<ClassResponseDto>> CreateClass(ClassDto cls)
+        public async Task<BaseResponse<ClassResponseDto>> AddClass(ClassDto cls)
         {
             ClassDto newClass = new ClassDto
             {
@@ -24,7 +27,7 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
                 Grade = cls.Grade,
             };
 
-            ClassDto result = await _classRepository.CreateClass(newClass);
+            ClassDto result = await _classRepository.AddClass(newClass);
 
             ClassResponseDto responseData = _mapper.Map<ClassResponseDto>(result);
 
@@ -32,6 +35,25 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
             {
                 Success = true,
                 Message = "Class Created",
+                Data = responseData
+            };
+        }
+
+        public async Task<BaseResponse<ClassResponseDto>> GetClassById(int id)
+        {
+            Class? result = await _classRepository.GetClassById(id);
+
+            if (result == null) 
+            {
+                throw new UDNotFoundException("Class ID Not Found");
+            }
+
+            ClassResponseDto responseData = _mapper.Map<ClassResponseDto>(result);
+
+            return new BaseResponse<ClassResponseDto>
+            {
+                Success = true,
+                Message = "Class Recieved",
                 Data = responseData
             };
         }

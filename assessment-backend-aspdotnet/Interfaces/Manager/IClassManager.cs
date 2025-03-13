@@ -5,6 +5,7 @@ namespace assessment_backend_aspdotnet.Interfaces.Manager
 {
     public interface IClassManager
     {
-        Task<BaseResponse<ClassResponseDto>> CreateClass(ClassDto cls);
+        Task<BaseResponse<ClassResponseDto>> AddClass(ClassDto cls);
+        Task<BaseResponse<ClassResponseDto>> GetClassById(int id);
     }
 }

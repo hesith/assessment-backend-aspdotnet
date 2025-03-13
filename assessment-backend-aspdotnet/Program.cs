@@ -7,6 +7,7 @@ using assessment_backend_aspdotnet.Interfaces.ManagerInterfaces;
 using assessment_backend_aspdotnet.Interfaces.Repository;
 using assessment_backend_aspdotnet.Managers.ClassManager;
 using assessment_backend_aspdotnet.Managers.StudentManager;
+using assessment_backend_aspdotnet.Middlewares;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,6 +43,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//CORS
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
+//Error handling
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

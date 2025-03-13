@@ -17,14 +17,15 @@ namespace assessment_backend_aspdotnet.Controllers
         }
 
         [HttpPost("student")]
-        public async Task<IActionResult> CreateStudent([FromBody] StudentDto studentDto)
+        public async Task<IActionResult> AddStudent([FromBody] StudentDto studentDto)
         {
+
             if (studentDto == null) 
             {
                 return BadRequest("Invalid Student Data");
             }
 
-            BaseResponse<StudentResponseDto> result = await _studentManager.CreateStudent(studentDto);
+            BaseResponse<StudentResponseDto> result = await _studentManager.AddStudent(studentDto);
             return Ok(result);
         }
     }

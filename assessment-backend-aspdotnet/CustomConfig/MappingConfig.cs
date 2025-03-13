@@ -16,6 +16,7 @@ namespace assessment_backend_aspdotnet.CustomConfig
 
                 config.CreateMap<ClassDto, Class>();
                 config.CreateMap<ClassDto, ClassResponseDto>();
+                config.CreateMap<Class, ClassResponseDto>();
 
             });
 
