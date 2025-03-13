@@ -1,15 +1,18 @@
 ﻿using assessment_backend_aspdotnet.DataAccess.Entities;
 using assessment_backend_aspdotnet.Model.Dto;
+using assessment_backend_aspdotnet.Model.Response;
 
 namespace assessment_backend_aspdotnet.Interfaces.Repository
 {
     public interface IStudentRepository
     {
         Task<StudentDto> AddStudent(StudentDto student);
-        //Task<StudentDto> UpdateStudent(Student student);
-        Task<StudentDto?> GetStudentById(int id);
-        Task<List<StudentDto>> GetAllStudents();
-        //Task<StudentDto> DeleteStudentById(String id);
+        Task<StudentDto> UpdateStudent(int id, StudentDto student);
+        Task<StudentResponseDto?> GetStudentById(int id);
+        Task<List<StudentResponseDto>> GetAllStudents();
+        Task<bool> DeleteStudentById(int id);
+        Task<List<StudentResponseDto>> GetStudentsByClassId(int id);
+
 
 
 

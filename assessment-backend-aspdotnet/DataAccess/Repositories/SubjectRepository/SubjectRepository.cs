@@ -2,6 +2,7 @@
 using assessment_backend_aspdotnet.DataAccess.Entities;
 using assessment_backend_aspdotnet.Interfaces.Repository;
 using assessment_backend_aspdotnet.Model.Dto;
+using assessment_backend_aspdotnet.Model.Response;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -32,18 +33,18 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.SubjectRepository
             return subject;
         }
 
-        public async Task<SubjectDto?> GetSubjectById(int id)
+        public async Task<SubjectResponseDto?> GetSubjectById(int id)
         {
             Subject? result = await _dbContext.Subjects.Where(s => s.Id == id).FirstOrDefaultAsync();
-            SubjectDto convDbObj = _mapper.Map<SubjectDto>(result);
+            SubjectResponseDto convDbObj = _mapper.Map<SubjectResponseDto>(result);
 
             return convDbObj;
         }
 
-        public async Task<List<SubjectDto>> GetAllSubjects()
+        public async Task<List<SubjectResponseDto>> GetAllSubjects()
         {
             List<Subject> data = await _dbContext.Subjects.ToListAsync<Subject>();
-            return _mapper.Map<List<SubjectDto>>(data);
+            return _mapper.Map<List<SubjectResponseDto>>(data);
         }
     }
 }

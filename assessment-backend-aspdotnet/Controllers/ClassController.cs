@@ -45,7 +45,19 @@ namespace assessment_backend_aspdotnet.Controllers
         [HttpGet("classes")]
         public async Task<IActionResult> GetAllClasses()
         {
-            BaseResponse<List<ClassDto>> result = await _classManager.GetAllClasses();
+            BaseResponse<List<ClassResponseDto>> result = await _classManager.GetAllClasses();
+            return Ok(result);
+        }
+
+        [HttpGet("classes/{id}/students")]
+        public async Task<IActionResult> GetStudentsByClassId(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest("Invalid Class Data");
+            }
+
+            BaseResponse<List<StudentResponseDto>> result = await _classManager.GetStudentsByClassId(id);
             return Ok(result);
         }
     }

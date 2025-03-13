@@ -16,7 +16,7 @@ namespace assessment_backend_aspdotnet.Controllers
             _studentManager = studentManager;
         }
 
-        [HttpPost("student")]
+        [HttpPost("students")]
         public async Task<IActionResult> AddStudent([FromBody] StudentDto studentDto)
         {
 
@@ -29,10 +29,35 @@ namespace assessment_backend_aspdotnet.Controllers
             return Ok(result);
         }
 
+        [HttpPut("students/{id}")]
+        public async Task<IActionResult> UpdateStudent(int id, [FromBody] StudentDto studentDto)
+        {
+
+            if (studentDto == null)
+            {
+                return BadRequest("Invalid Student Data");
+            }
+
+            BaseResponse<StudentResponseDto> result = await _studentManager.UpdateStudent(id, studentDto);
+            return Ok(result);
+        }
+
+        [HttpDelete("students/{id}")]
+        public async Task<IActionResult> DeleteStudentById(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest("Invalid Student Data");
+            }
+
+            BaseResponse<bool> result = await _studentManager.DeleteStudentById(id);
+            return Ok(result);
+        }
+
         [HttpGet("students")]
         public async Task<IActionResult> GetAllStudents()
         {
-            BaseResponse<List<StudentDto>> result = await _studentManager.GetAllStudents();
+            BaseResponse<List<StudentResponseDto>> result = await _studentManager.GetAllStudents();
             return Ok(result);
         }
 

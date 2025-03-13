@@ -44,14 +44,12 @@ namespace assessment_backend_aspdotnet.Managers.SubjectManager
 
         public async Task<BaseResponse<SubjectResponseDto>> GetSubjectById(int id)
         {
-            SubjectDto? result = await _subjectRepository.GetSubjectById(id);
+            SubjectResponseDto? responseData = await _subjectRepository.GetSubjectById(id);
 
-            if (result == null)
+            if (responseData == null)
             {
                 throw new UDNotFoundException("Subject ID Not Found");
             }
-
-            SubjectResponseDto responseData = _mapper.Map<SubjectResponseDto>(result);
 
             return new BaseResponse<SubjectResponseDto>
             {
@@ -61,11 +59,11 @@ namespace assessment_backend_aspdotnet.Managers.SubjectManager
             };
         }
 
-        public async Task<BaseResponse<List<SubjectDto>>> GetAllSubjects()
+        public async Task<BaseResponse<List<SubjectResponseDto>>> GetAllSubjects()
         {
-            List<SubjectDto> responseData = await _subjectRepository.GetAllSubjects();
+            List<SubjectResponseDto> responseData = await _subjectRepository.GetAllSubjects();
 
-            return new BaseResponse<List<SubjectDto>>
+            return new BaseResponse<List<SubjectResponseDto>>
             {
                 Success = true,
                 Message = "Subjects Received",

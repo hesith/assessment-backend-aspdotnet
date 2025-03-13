@@ -7,7 +7,8 @@ namespace assessment_backend_aspdotnet.Interfaces.Manager
     {
         Task<BaseResponse<ClassResponseDto>> AddClass(ClassDto cls);
         Task<BaseResponse<ClassResponseDto>> GetClassById(int id);
-        Task<BaseResponse<List<ClassDto>>> GetAllClasses();
+        Task<BaseResponse<List<ClassResponseDto>>> GetAllClasses();
+        Task<BaseResponse<List<StudentResponseDto>>> GetStudentsByClassId(int id);
 
     }
 }

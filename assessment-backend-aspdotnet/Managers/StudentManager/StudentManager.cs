@@ -48,11 +48,58 @@ namespace assessment_backend_aspdotnet.Managers.StudentManager
             };
         }
 
-        public async Task<BaseResponse<List<StudentDto>>> GetAllStudents()
+        public async Task<BaseResponse<StudentResponseDto>> UpdateStudent(int id, StudentDto student)
         {
-            List<StudentDto> responseData = await _studentRepository.GetAllStudents();
+            StudentResponseDto? existingStudent = await _studentRepository.GetStudentById(id);
 
-            return new BaseResponse<List<StudentDto>>
+            if (existingStudent == null)
+            {
+                throw new UDNotFoundException("Student ID Not Found");
+            }
+
+            ClassResponseDto? existingClass = await _classRepository.GetClassById((int)(student.ClassId ?? -1m));
+
+            if (existingClass == null)
+            {
+                throw new UDNotFoundException("Class ID Not Found");
+            }
+
+            StudentDto newStudent = new StudentDto
+            {
+                Name = student.Name,
+                Age = student.Age,
+                Address = student.Address,
+                ClassId = student.ClassId
+            };
+
+            StudentDto result = await _studentRepository.UpdateStudent(id, newStudent);
+
+            StudentResponseDto responseData = _mapper.Map<StudentResponseDto>(result);
+
+            return new BaseResponse<StudentResponseDto>
+            {
+                Success = true,
+                Message = "Student Updated",
+                Data = responseData
+            };
+        }
+
+        public async Task<BaseResponse<bool>> DeleteStudentById(int id)
+        {
+            bool responseData = await _studentRepository.DeleteStudentById(id);
+
+            return new BaseResponse<bool>
+            {
+                Success = true,
+                Message = "Student Removed",
+                Data = responseData
+            };
+        }
+        public async Task<BaseResponse<List<StudentResponseDto>>> GetAllStudents()
+        {
+            List<StudentResponseDto> responseData = await _studentRepository.GetAllStudents();
+
+            return new BaseResponse<List<StudentResponseDto>>
             {
                 Success = true,
                 Message = "Students Received",
@@ -62,14 +109,12 @@ namespace assessment_backend_aspdotnet.Managers.StudentManager
 
         public async Task<BaseResponse<StudentResponseDto>> GetStudentById(int id)
         {
-            StudentDto? result = await _studentRepository.GetStudentById(id);
+            StudentResponseDto? responseData = await _studentRepository.GetStudentById(id);
 
-            if (result == null)
+            if (responseData == null)
             {
                 throw new UDNotFoundException("Student ID Not Found");
             }
-
-            StudentResponseDto responseData = _mapper.Map<StudentResponseDto>(result);
 
             return new BaseResponse<StudentResponseDto>
             {
@@ -78,5 +123,7 @@ namespace assessment_backend_aspdotnet.Managers.StudentManager
                 Data = responseData
             };
         }
+
+
     }
 }

@@ -45,7 +45,7 @@ namespace assessment_backend_aspdotnet.Controllers
         [HttpGet("subjects")]
         public async Task<IActionResult> GetAllSubjects()
         {
-            BaseResponse<List<SubjectDto>> result = await _subjectManager.GetAllSubjects();
+            BaseResponse<List<SubjectResponseDto>> result = await _subjectManager.GetAllSubjects();
             return Ok(result);
         }
     }

@@ -13,6 +13,7 @@ namespace assessment_backend_aspdotnet.CustomConfig
             {
                 config.CreateMap<StudentDto, Student>();
                 config.CreateMap<Student, StudentDto>();
+                config.CreateMap<Student, StudentResponseDto>();
                 config.CreateMap<StudentDto, StudentResponseDto>();
 
                 config.CreateMap<ClassDto, Class>();
@@ -25,6 +26,10 @@ namespace assessment_backend_aspdotnet.CustomConfig
                 config.CreateMap<Subject, SubjectResponseDto>();
                 config.CreateMap<Subject, SubjectDto>();
 
+                config.CreateMap<EnrollmentDto, Enrollment>();
+                config.CreateMap<Enrollment, EnrollmentDto>();
+                config.CreateMap<Enrollment, EnrollmentResponseDto>();
+                config.CreateMap<EnrollmentDto, EnrollmentResponseDto>();
             });
 
             return mappings;

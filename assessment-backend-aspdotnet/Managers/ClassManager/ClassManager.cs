@@ -14,10 +14,12 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
     {
         private readonly IMapper _mapper;
         private readonly IClassRepository _classRepository;
-        public ClassManager(IMapper mapper, IClassRepository classRepository)
+        private readonly IStudentRepository _studentRepository;
+        public ClassManager(IMapper mapper, IClassRepository classRepository, IStudentRepository studentRepository)
         {
             _mapper = mapper;
             _classRepository = classRepository;
+            _studentRepository = studentRepository;
         }
 
         public async Task<BaseResponse<ClassResponseDto>> AddClass(ClassDto cls)
@@ -42,14 +44,12 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
 
         public async Task<BaseResponse<ClassResponseDto>> GetClassById(int id)
         {
-            ClassDto? result = await _classRepository.GetClassById(id);
+            ClassResponseDto? responseData = await _classRepository.GetClassById(id);
 
-            if (result == null) 
+            if (responseData == null) 
             {
                 throw new UDNotFoundException("Class ID Not Found");
             }
-
-            ClassResponseDto responseData = _mapper.Map<ClassResponseDto>(result);
 
             return new BaseResponse<ClassResponseDto>
             {
@@ -59,14 +59,26 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
             };
         }
 
-        public async Task<BaseResponse<List<ClassDto>>> GetAllClasses()
+        public async Task<BaseResponse<List<ClassResponseDto>>> GetAllClasses()
         {
-            List<ClassDto> responseData = await _classRepository.GetAllClasses();
+            List<ClassResponseDto> responseData = await _classRepository.GetAllClasses();
 
-            return new BaseResponse<List<ClassDto>>
+            return new BaseResponse<List<ClassResponseDto>>
             {
                 Success = true,
                 Message = "Classes Received",
+                Data = responseData
+            };
+        }
+
+        public async Task<BaseResponse<List<StudentResponseDto>>> GetStudentsByClassId(int id)
+        {
+            List<StudentResponseDto> responseData = await _studentRepository.GetStudentsByClassId(id);
+
+            return new BaseResponse<List<StudentResponseDto>>
+            {
+                Success = true,
+                Message = "Students Received",
                 Data = responseData
             };
         }

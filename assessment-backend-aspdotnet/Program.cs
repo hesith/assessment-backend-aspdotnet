@@ -2,12 +2,14 @@ using assessment_backend_aspdotnet;
 using assessment_backend_aspdotnet.CustomConfig;
 using assessment_backend_aspdotnet.DataAccess.Context;
 using assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository;
+using assessment_backend_aspdotnet.DataAccess.Repositories.EnrollmentRepository;
 using assessment_backend_aspdotnet.DataAccess.Repositories.StudentRepository;
 using assessment_backend_aspdotnet.DataAccess.Repositories.SubjectRepository;
 using assessment_backend_aspdotnet.Interfaces.Manager;
 using assessment_backend_aspdotnet.Interfaces.ManagerInterfaces;
 using assessment_backend_aspdotnet.Interfaces.Repository;
 using assessment_backend_aspdotnet.Managers.ClassManager;
+using assessment_backend_aspdotnet.Managers.EnrollmentManager;
 using assessment_backend_aspdotnet.Managers.StudentManager;
 using assessment_backend_aspdotnet.Managers.SubjectManager;
 using assessment_backend_aspdotnet.Middlewares;
@@ -28,11 +30,13 @@ builder.Services.AddDbContext<AssessmentContext>(options => options.UseSqlServer
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 
 //Add Managers
 builder.Services.AddScoped<IStudentManager, StudentManager>();
 builder.Services.AddScoped<IClassManager, ClassManager>();
 builder.Services.AddScoped<ISubjectManager, SubjectManager>();
+builder.Services.AddScoped<IEnrollmentManager, EnrollmentManager>();
 
 
 builder.Services.AddControllers();
