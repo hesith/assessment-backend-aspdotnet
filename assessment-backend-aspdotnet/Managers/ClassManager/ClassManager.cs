@@ -1,5 +1,6 @@
 ﻿using assessment_backend_aspdotnet.CustomConfig;
 using assessment_backend_aspdotnet.DataAccess.Entities;
+using assessment_backend_aspdotnet.DataAccess.Repositories.StudentRepository;
 using assessment_backend_aspdotnet.Interfaces.Manager;
 using assessment_backend_aspdotnet.Interfaces.Repository;
 using assessment_backend_aspdotnet.Model.Dto;
@@ -41,7 +42,7 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
 
         public async Task<BaseResponse<ClassResponseDto>> GetClassById(int id)
         {
-            Class? result = await _classRepository.GetClassById(id);
+            ClassDto? result = await _classRepository.GetClassById(id);
 
             if (result == null) 
             {
@@ -54,6 +55,18 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
             {
                 Success = true,
                 Message = "Class Recieved",
+                Data = responseData
+            };
+        }
+
+        public async Task<BaseResponse<List<ClassDto>>> GetAllClasses()
+        {
+            List<ClassDto> responseData = await _classRepository.GetAllClasses();
+
+            return new BaseResponse<List<ClassDto>>
+            {
+                Success = true,
+                Message = "Classes Received",
                 Data = responseData
             };
         }

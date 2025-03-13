@@ -28,5 +28,24 @@ namespace assessment_backend_aspdotnet.Controllers
             BaseResponse<StudentResponseDto> result = await _studentManager.AddStudent(studentDto);
             return Ok(result);
         }
+
+        [HttpGet("students")]
+        public async Task<IActionResult> GetAllStudents()
+        {
+            BaseResponse<List<StudentDto>> result = await _studentManager.GetAllStudents();
+            return Ok(result);
+        }
+
+        [HttpGet("students/{id}")]
+        public async Task<IActionResult> GetStudentById(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest("Invalid Student Data");
+            }
+
+            BaseResponse<StudentResponseDto> result = await _studentManager.GetStudentById(id);
+            return Ok(result);
+        }
     }
 }

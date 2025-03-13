@@ -30,9 +30,18 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository
             return cls;
         }
 
-        public async Task<Class?> GetClassById(int id)
+        public async Task<ClassDto?> GetClassById(int id)
         {
-            return await _dbContext.Classes.Where(c => c.Id == id).FirstOrDefaultAsync();
+            Class? result = await _dbContext.Classes.Where(c => c.Id == id).FirstOrDefaultAsync();
+            ClassDto convDbObj = _mapper.Map<ClassDto>(result);
+
+            return convDbObj;
+        }
+
+        public async Task<List<ClassDto>> GetAllClasses()
+        {
+            List<Class> data = await _dbContext.Classes.ToListAsync<Class>();
+            return _mapper.Map<List<ClassDto>>(data);
         }
     }
 }

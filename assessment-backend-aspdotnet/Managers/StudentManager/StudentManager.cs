@@ -40,8 +40,42 @@ namespace assessment_backend_aspdotnet.Managers.StudentManager
 
             StudentResponseDto responseData = _mapper.Map<StudentResponseDto>(result);
 
-            return new BaseResponse<StudentResponseDto>{ 
-                Success = true, Message = "Student Created", Data = responseData
+            return new BaseResponse<StudentResponseDto>
+            {
+                Success = true,
+                Message = "Student Created",
+                Data = responseData
+            };
+        }
+
+        public async Task<BaseResponse<List<StudentDto>>> GetAllStudents()
+        {
+            List<StudentDto> responseData = await _studentRepository.GetAllStudents();
+
+            return new BaseResponse<List<StudentDto>>
+            {
+                Success = true,
+                Message = "Students Received",
+                Data = responseData
+            };
+        }
+
+        public async Task<BaseResponse<StudentResponseDto>> GetStudentById(int id)
+        {
+            StudentDto? result = await _studentRepository.GetStudentById(id);
+
+            if (result == null)
+            {
+                throw new UDNotFoundException("Student ID Not Found");
+            }
+
+            StudentResponseDto responseData = _mapper.Map<StudentResponseDto>(result);
+
+            return new BaseResponse<StudentResponseDto>
+            {
+                Success = true,
+                Message = "Student Recieved",
+                Data = responseData
             };
         }
     }

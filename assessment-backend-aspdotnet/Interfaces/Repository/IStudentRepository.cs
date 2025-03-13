@@ -7,8 +7,8 @@ namespace assessment_backend_aspdotnet.Interfaces.Repository
     {
         Task<StudentDto> AddStudent(StudentDto student);
         //Task<StudentDto> UpdateStudent(Student student);
-        //Task<StudentDto> GetStudentById(String id);
-        //Task<IQueryable<StudentDto>> GetAllStudents();
+        Task<StudentDto?> GetStudentById(int id);
+        Task<List<StudentDto>> GetAllStudents();
         //Task<StudentDto> DeleteStudentById(String id);
 
 

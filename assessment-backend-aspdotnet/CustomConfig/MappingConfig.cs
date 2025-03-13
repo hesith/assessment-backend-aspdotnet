@@ -12,11 +12,18 @@ namespace assessment_backend_aspdotnet.CustomConfig
             var mappings = new MapperConfiguration(config =>
             {
                 config.CreateMap<StudentDto, Student>();
+                config.CreateMap<Student, StudentDto>();
                 config.CreateMap<StudentDto, StudentResponseDto>();
 
                 config.CreateMap<ClassDto, Class>();
+                config.CreateMap<Class, ClassDto>();
                 config.CreateMap<ClassDto, ClassResponseDto>();
                 config.CreateMap<Class, ClassResponseDto>();
+
+                config.CreateMap<SubjectDto, Subject>();
+                config.CreateMap<SubjectDto, SubjectResponseDto>();
+                config.CreateMap<Subject, SubjectResponseDto>();
+                config.CreateMap<Subject, SubjectDto>();
 
             });
 

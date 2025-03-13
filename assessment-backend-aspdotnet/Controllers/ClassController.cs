@@ -1,5 +1,6 @@
 ﻿using assessment_backend_aspdotnet.Interfaces.Manager;
 using assessment_backend_aspdotnet.Interfaces.ManagerInterfaces;
+using assessment_backend_aspdotnet.Managers.StudentManager;
 using assessment_backend_aspdotnet.Model.Dto;
 using assessment_backend_aspdotnet.Model.Response;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,13 @@ namespace assessment_backend_aspdotnet.Controllers
             }
 
             BaseResponse<ClassResponseDto> result = await _classManager.GetClassById(id);
+            return Ok(result);
+        }
+
+        [HttpGet("classes")]
+        public async Task<IActionResult> GetAllClasses()
+        {
+            BaseResponse<List<ClassDto>> result = await _classManager.GetAllClasses();
             return Ok(result);
         }
     }

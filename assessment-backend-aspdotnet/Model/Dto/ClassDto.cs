@@ -2,7 +2,6 @@
 {
     public class ClassDto
     {
-        //public decimal Id { get; set; }
 
         public string Name { get; set; } = null!;
 

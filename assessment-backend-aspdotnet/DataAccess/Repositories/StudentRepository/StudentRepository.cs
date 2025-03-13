@@ -30,5 +30,19 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.StudentRepository
 
             return student;
         }
+
+        public async Task<List<StudentDto>> GetAllStudents()
+        {
+            List<Student> data = await _dbContext.Students.ToListAsync<Student>();
+            return _mapper.Map<List<StudentDto>>(data);
+        }
+
+        public async Task<StudentDto?> GetStudentById(int id)
+        {
+            Student? result = await _dbContext.Students.Where(s => s.Id == id).FirstOrDefaultAsync();
+            StudentDto convDbObj = _mapper.Map<StudentDto>(result);
+
+            return convDbObj;
+        }
     }
 }
