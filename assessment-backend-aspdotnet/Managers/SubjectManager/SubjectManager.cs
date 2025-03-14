@@ -44,6 +44,45 @@ namespace assessment_backend_aspdotnet.Managers.SubjectManager
             };
         }
 
+        public async Task<BaseResponse<SubjectResponseDto>> UpdateSubject(int id, SubjectDto subject)
+        {
+            SubjectResponseDto? existingSubject = await _subjectRepository.GetSubjectById(id);
+
+            if (existingSubject == null)
+            {
+                throw new UDNotFoundException("Subject ID Not Found");
+            }
+
+            SubjectDto newSubject = new SubjectDto
+            {
+                Name = subject.Name,
+                Code= subject.Code,
+                Teacher = subject.Teacher
+            };
+
+            SubjectDto result = await _subjectRepository.UpdateSubject(id, newSubject);
+
+            SubjectResponseDto responseData = _mapper.Map<SubjectResponseDto>(result);
+
+            return new BaseResponse<SubjectResponseDto>
+            {
+                Success = true,
+                Message = "Subject Updated",
+                Data = responseData
+            };
+        }
+
+        public async Task<BaseResponse<bool>> DeleteSubjectById(int id)
+        {
+            bool responseData = await _subjectRepository.DeleteSubjectById(id);
+
+            return new BaseResponse<bool>
+            {
+                Success = true,
+                Message = "Subject Removed",
+                Data = responseData
+            };
+        }
         public async Task<BaseResponse<SubjectResponseDto>> GetSubjectById(int id)
         {
             SubjectResponseDto? responseData = await _subjectRepository.GetSubjectById(id);

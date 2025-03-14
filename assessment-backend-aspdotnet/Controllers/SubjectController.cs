@@ -1,5 +1,6 @@
 ﻿using assessment_backend_aspdotnet.Interfaces.Manager;
 using assessment_backend_aspdotnet.Interfaces.ManagerInterfaces;
+using assessment_backend_aspdotnet.Managers.ClassManager;
 using assessment_backend_aspdotnet.Managers.StudentManager;
 using assessment_backend_aspdotnet.Model.Dto;
 using assessment_backend_aspdotnet.Model.Response;
@@ -30,6 +31,30 @@ namespace assessment_backend_aspdotnet.Controllers
             return Ok(result);
         }
 
+        [HttpPut("subjects/{id}")]
+        public async Task<IActionResult> UpdateSubject(int id, [FromBody] SubjectDto subjectDto)
+        {
+
+            if (subjectDto == null)
+            {
+                return BadRequest("Invalid Subject Data");
+            }
+
+            BaseResponse<SubjectResponseDto> result = await _subjectManager.UpdateSubject(id, subjectDto);
+            return Ok(result);
+        }
+
+        [HttpDelete("subjects/{id}")]
+        public async Task<IActionResult> DeleteSubjectById(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest("Invalid Subject Data");
+            }
+
+            BaseResponse<bool> result = await _subjectManager.DeleteSubjectById(id);
+            return Ok(result);
+        }
         [HttpGet("subjects/{id}")]
         public async Task<IActionResult> GetSubjectById(int id)
         {

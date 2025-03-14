@@ -30,6 +30,31 @@ namespace assessment_backend_aspdotnet.Controllers
             return Ok(result);
         }
 
+        [HttpPut("classes/{id}")]
+        public async Task<IActionResult> UpdateClass(int id, [FromBody] ClassDto classDto)
+        {
+
+            if (classDto == null)
+            {
+                return BadRequest("Invalid Class Data");
+            }
+
+            BaseResponse<ClassResponseDto> result = await _classManager.UpdateClass(id, classDto);
+            return Ok(result);
+        }
+
+        [HttpDelete("classes/{id}")]
+        public async Task<IActionResult> DeleteClassById(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest("Invalid Class Data");
+            }
+
+            BaseResponse<bool> result = await _classManager.DeleteClassById(id);
+            return Ok(result);
+        }
+
         [HttpGet("classes/{id}")]
         public async Task<IActionResult> GetClassById(int id)
         {

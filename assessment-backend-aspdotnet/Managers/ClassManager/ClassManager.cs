@@ -42,6 +42,43 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
             };
         }
 
+        public async Task<BaseResponse<ClassResponseDto>> UpdateClass(int id, ClassDto cls)
+        {
+            ClassResponseDto? existingClass = await _classRepository.GetClassById(id);
+
+            if (existingClass == null)
+            {
+                throw new UDNotFoundException("Class ID Not Found");
+            }
+
+            ClassDto newClass = new ClassDto
+            {
+                Name = cls.Name,
+                Grade = cls.Grade
+            };
+
+            ClassDto result = await _classRepository.UpdateClass(id, newClass);
+
+            ClassResponseDto responseData = _mapper.Map<ClassResponseDto>(result);
+
+            return new BaseResponse<ClassResponseDto>
+            {
+                Success = true,
+                Message = "Student Updated",
+                Data = responseData
+            };
+        }
+        public async Task<BaseResponse<bool>> DeleteClassById(int id)
+        {
+            bool responseData = await _classRepository.DeleteClassById(id);
+
+            return new BaseResponse<bool>
+            {
+                Success = true,
+                Message = "Class Removed",
+                Data = responseData
+            };
+        }
         public async Task<BaseResponse<ClassResponseDto>> GetClassById(int id)
         {
             ClassResponseDto? responseData = await _classRepository.GetClassById(id);

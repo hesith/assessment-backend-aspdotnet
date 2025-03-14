@@ -5,6 +5,7 @@ using assessment_backend_aspdotnet.Model.Dto;
 using assessment_backend_aspdotnet.Model.Response;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using static assessment_backend_aspdotnet.CustomConfig.UserDefinedException;
 
 namespace assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository
 {
@@ -31,9 +32,33 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository
             return cls;
         }
 
+        public async Task<ClassDto> UpdateClass(int id, ClassDto cls)
+        {
+            Class convDbObj = _mapper.Map<Class>(cls);
+            convDbObj.Id = id;
+
+            _dbContext.Classes.Update(convDbObj);
+            await _dbContext.SaveChangesAsync();
+
+            return cls;
+        }
+        public async Task<bool> DeleteClassById(int id)
+        {
+            Class? cls = await _dbContext.Classes.Where(c => c.Id == id).FirstOrDefaultAsync();
+
+            if (cls == null)
+            {
+                throw new UDNotFoundException("Class Not Found");
+            }
+
+            _dbContext.Classes.Remove(cls);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
         public async Task<ClassResponseDto?> GetClassById(int id)
         {
-            Class? result = await _dbContext.Classes.Where(c => c.Id == id).FirstOrDefaultAsync();
+            Class? result = await _dbContext.Classes.AsNoTracking().Where(c => c.Id == id).FirstOrDefaultAsync();
             ClassResponseDto convDbObj = _mapper.Map<ClassResponseDto>(result);
 
             return convDbObj;

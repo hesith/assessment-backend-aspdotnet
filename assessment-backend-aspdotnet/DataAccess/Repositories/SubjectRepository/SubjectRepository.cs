@@ -6,6 +6,7 @@ using assessment_backend_aspdotnet.Model.Response;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using static assessment_backend_aspdotnet.CustomConfig.UserDefinedException;
 
 namespace assessment_backend_aspdotnet.DataAccess.Repositories.SubjectRepository
 {
@@ -32,10 +33,33 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.SubjectRepository
 
             return subject;
         }
+        public async Task<SubjectDto> UpdateSubject(int id, SubjectDto subject)
+        {
+            Subject convDbObj = _mapper.Map<Subject>(subject);
+            convDbObj.Id = id;
 
+            _dbContext.Subjects.Update(convDbObj);
+            await _dbContext.SaveChangesAsync();
+
+            return subject;
+        }
+        public async Task<bool> DeleteSubjectById(int id)
+        {
+            Subject? subject = await _dbContext.Subjects.Where(s => s.Id == id).FirstOrDefaultAsync();
+
+            if (subject == null)
+            {
+                throw new UDNotFoundException("Subject Not Found");
+            }
+
+            _dbContext.Subjects.Remove(subject);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
         public async Task<SubjectResponseDto?> GetSubjectById(int id)
         {
-            Subject? result = await _dbContext.Subjects.Where(s => s.Id == id).FirstOrDefaultAsync();
+            Subject? result = await _dbContext.Subjects.AsNoTracking().Where(s => s.Id == id).FirstOrDefaultAsync();
             SubjectResponseDto convDbObj = _mapper.Map<SubjectResponseDto>(result);
 
             return convDbObj;

@@ -95,7 +95,8 @@ public partial class AssessmentContext : DbContext
 
             entity.HasOne(d => d.Class).WithMany(p => p.Students)
                 .HasForeignKey(d => d.ClassId)
-                .HasConstraintName("FK_student_class");
+                .HasConstraintName("FK_student_class")
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         modelBuilder.Entity<Subject>(entity =>
