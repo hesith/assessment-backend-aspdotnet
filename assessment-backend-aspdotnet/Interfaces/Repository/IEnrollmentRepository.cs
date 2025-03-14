@@ -6,7 +6,7 @@ namespace assessment_backend_aspdotnet.Interfaces.Repository
     public interface IEnrollmentRepository
     {
         Task<EnrollmentDto> AddEnrollment(EnrollmentDto cls);
-        //Task<ClassResponseDto?> GetClassById(int id);
+        Task<List<StudentResponseDto>> GetStudentsBySubject(int id);
         Task<bool> DeleteEnrollmentById(int id);
     }
 }

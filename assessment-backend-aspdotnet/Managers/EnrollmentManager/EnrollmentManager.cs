@@ -53,7 +53,7 @@ namespace assessment_backend_aspdotnet.Managers.EnrollmentManager
             return new BaseResponse<EnrollmentResponseDto>
             {
                 Success = true,
-                Message = "Student Created",
+                Message = "Enrollment Created",
                 Data = responseData
             };
         }

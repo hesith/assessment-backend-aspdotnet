@@ -7,5 +7,6 @@ namespace assessment_backend_aspdotnet.Interfaces.Manager
     {
         Task<BaseResponse<EnrollmentResponseDto>> AddEnrollment(EnrollmentDto enrollment);
         Task<BaseResponse<bool>> DeleteEnrollmentById(int id);
+
     }
 }

@@ -52,7 +52,8 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.StudentRepository
                 throw new UDNotFoundException("Student Not Found");
             }
 
-            _dbContext.Remove(student);
+            _dbContext.Students.Remove(student);
+            await _dbContext.SaveChangesAsync();
 
             return true;
         }
@@ -66,7 +67,7 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.StudentRepository
 
         public async Task<StudentResponseDto?> GetStudentById(int id)
         {
-            Student? result = await _dbContext.Students.Where(s => s.Id == id).FirstOrDefaultAsync();
+            Student? result = await _dbContext.Students.AsNoTracking().Where(s => s.Id == id).FirstOrDefaultAsync();
             StudentResponseDto convDbObj = _mapper.Map<StudentResponseDto>(result);
 
             return convDbObj;

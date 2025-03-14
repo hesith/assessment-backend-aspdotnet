@@ -48,5 +48,17 @@ namespace assessment_backend_aspdotnet.Controllers
             BaseResponse<List<SubjectResponseDto>> result = await _subjectManager.GetAllSubjects();
             return Ok(result);
         }
+
+        [HttpGet("subjects/{id}/students")]
+        public async Task<IActionResult> GetStudentsBySubject(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest("Invalid Subject Data");
+            }
+
+            BaseResponse<List<StudentResponseDto>> result = await _subjectManager.GetStudentsBySubject(id);
+            return Ok(result);
+        }
     }
 }

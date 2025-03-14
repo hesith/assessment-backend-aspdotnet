@@ -8,6 +8,7 @@ namespace assessment_backend_aspdotnet.Interfaces.Manager
         Task<BaseResponse<SubjectResponseDto>> AddSubject(SubjectDto subject);
         Task<BaseResponse<SubjectResponseDto>> GetSubjectById(int id);
         Task<BaseResponse<List<SubjectResponseDto>>> GetAllSubjects();
+        Task<BaseResponse<List<StudentResponseDto>>> GetStudentsBySubject(int id);
 
 
     }

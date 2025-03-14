@@ -14,11 +14,13 @@ namespace assessment_backend_aspdotnet.Managers.SubjectManager
     {
         private readonly IMapper _mapper;
         private readonly ISubjectRepository _subjectRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
 
-        public SubjectManager(IMapper mapper, ISubjectRepository subjectRepository)
+        public SubjectManager(IMapper mapper, ISubjectRepository subjectRepository, IEnrollmentRepository enrollmentRepository)
         {
             _mapper = mapper;
             _subjectRepository  = subjectRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
 
         public async Task<BaseResponse<SubjectResponseDto>> AddSubject(SubjectDto subject)
@@ -67,6 +69,23 @@ namespace assessment_backend_aspdotnet.Managers.SubjectManager
             {
                 Success = true,
                 Message = "Subjects Received",
+                Data = responseData
+            };
+        }
+
+        public async Task<BaseResponse<List<StudentResponseDto>>> GetStudentsBySubject(int id)
+        {
+            List<StudentResponseDto>? responseData = await _enrollmentRepository.GetStudentsBySubject(id);
+
+            if (responseData == null)
+            {
+                throw new UDNotFoundException("Students Not Found");
+            }
+
+            return new BaseResponse<List<StudentResponseDto>>
+            {
+                Success = true,
+                Message = "Students Recieved",
                 Data = responseData
             };
         }

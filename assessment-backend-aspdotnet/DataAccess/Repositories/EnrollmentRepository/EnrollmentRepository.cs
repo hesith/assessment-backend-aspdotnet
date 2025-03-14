@@ -2,9 +2,11 @@
 using assessment_backend_aspdotnet.DataAccess.Entities;
 using assessment_backend_aspdotnet.Interfaces.Repository;
 using assessment_backend_aspdotnet.Model.Dto;
+using assessment_backend_aspdotnet.Model.Response;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using static assessment_backend_aspdotnet.CustomConfig.UserDefinedException;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace assessment_backend_aspdotnet.DataAccess.Repositories.EnrollmentRepository
 {
@@ -44,6 +46,26 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.EnrollmentReposit
             _dbContext.Remove(enrollment);
 
             return true;
+        }
+
+        public async Task<List<StudentResponseDto>> GetStudentsBySubject(int id)
+        {
+            List<Student> students = await _dbContext.Students.Join(_dbContext.Enrollments, 
+                student => student.Id,
+                enrollment => enrollment.StudentId,
+                (student, enrollment) => new {student, enrollment}
+                )
+                .Where(se => se.enrollment.SubjectId == id)
+                .Select(se => se.student)
+                .ToListAsync();
+
+            if (!students.Any())
+            {
+                throw new UDArgumentException("Students Not Found");
+            }
+
+            return _mapper.Map<List<StudentResponseDto>>(students);
+
         }
     }
 }
