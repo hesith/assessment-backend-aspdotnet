@@ -68,9 +68,9 @@ namespace assessment_backend_aspdotnet.Controllers
         }
 
         [HttpGet("subjects")]
-        public async Task<IActionResult> GetAllSubjects()
+        public async Task<IActionResult> GetAllSubjects(string? code, int? pageNo, int? pageSize)
         {
-            BaseResponse<List<SubjectResponseDto>> result = await _subjectManager.GetAllSubjects();
+            BaseResponse<PaginatedSubjectResponseDto> result = await _subjectManager.GetAllSubjects(code, pageNo, pageSize);
             return Ok(result);
         }
 

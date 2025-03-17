@@ -55,9 +55,9 @@ namespace assessment_backend_aspdotnet.Controllers
         }
 
         [HttpGet("students")]
-        public async Task<IActionResult> GetAllStudents()
+        public async Task<IActionResult> GetAllStudents(string? name, int? pageNo, int? pageSize)
         {
-            BaseResponse<List<StudentResponseDto>> result = await _studentManager.GetAllStudents();
+            BaseResponse<PaginatedStudentResponseDto> result = await _studentManager.GetAllStudents(name, pageNo, pageSize);
             return Ok(result);
         }
 

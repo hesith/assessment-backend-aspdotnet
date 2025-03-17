@@ -9,7 +9,7 @@ namespace assessment_backend_aspdotnet.Interfaces.Repository
         Task<ClassDto> UpdateClass(int id, ClassDto cls);
         Task<bool> DeleteClassById(int id);
         Task<ClassResponseDto?> GetClassById(int id);
-        Task<List<ClassResponseDto>> GetAllClasses();
+        Task<PaginatedClassResponseDto> GetAllClasses(string? name, int? pageNo, int? pageSize);
 
 
 

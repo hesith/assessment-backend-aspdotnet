@@ -95,11 +95,11 @@ namespace assessment_backend_aspdotnet.Managers.StudentManager
                 Data = responseData
             };
         }
-        public async Task<BaseResponse<List<StudentResponseDto>>> GetAllStudents()
+        public async Task<BaseResponse<PaginatedStudentResponseDto>> GetAllStudents(string? name, int? pageNo, int? pageSize)
         {
-            List<StudentResponseDto> responseData = await _studentRepository.GetAllStudents();
+            PaginatedStudentResponseDto responseData = await _studentRepository.GetAllStudents(name, pageNo, pageSize);
 
-            return new BaseResponse<List<StudentResponseDto>>
+            return new BaseResponse<PaginatedStudentResponseDto>
             {
                 Success = true,
                 Message = "Students Received",

@@ -65,10 +65,31 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.SubjectRepository
             return convDbObj;
         }
 
-        public async Task<List<SubjectResponseDto>> GetAllSubjects()
+        public async Task<PaginatedSubjectResponseDto> GetAllSubjects(string? code, int? pageNo, int? pageSize)
         {
-            List<Subject> data = await _dbContext.Subjects.ToListAsync<Subject>();
-            return _mapper.Map<List<SubjectResponseDto>>(data);
+            int totalMatching = await _dbContext.Subjects
+                .Where(s => string.IsNullOrWhiteSpace(code) || s.Name.Contains(code.Trim()))
+                .CountAsync<Subject>();
+
+            int totalPages = totalMatching == 0 ? 0 :
+                ((pageNo.HasValue && pageSize.HasValue) ? (int)Math.Ceiling((decimal)(totalMatching / pageSize)) : 1);
+
+            List<Subject> data = await _dbContext.Subjects
+                .Where(s => string.IsNullOrWhiteSpace(code) || s.Name.Contains(code.Trim()))
+                .Skip((int)((pageNo.HasValue && pageSize.HasValue) ? (pageNo - 1) * pageSize : 0))
+                .Take((int)((pageNo.HasValue && pageSize.HasValue) ? pageSize : totalMatching))
+                .ToListAsync<Subject>();
+
+            PaginatedSubjectResponseDto responseObj = new PaginatedSubjectResponseDto()
+            {
+                TotalPages = totalPages,
+                PageNo = pageNo ?? 1,
+                PageSize = pageSize ?? totalMatching,
+                Data = _mapper.Map<List<SubjectResponseDto>>(data)
+            };
+
+            return responseObj;
+
         }
     }
 }

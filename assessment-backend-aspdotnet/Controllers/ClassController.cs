@@ -68,9 +68,9 @@ namespace assessment_backend_aspdotnet.Controllers
         }
 
         [HttpGet("classes")]
-        public async Task<IActionResult> GetAllClasses()
+        public async Task<IActionResult> GetAllClasses(string? name, int? pageNo, int? pageSize)
         {
-            BaseResponse<List<ClassResponseDto>> result = await _classManager.GetAllClasses();
+            BaseResponse<PaginatedClassResponseDto> result = await _classManager.GetAllClasses(name, pageNo, pageSize);
             return Ok(result);
         }
 

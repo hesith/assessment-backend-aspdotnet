@@ -100,11 +100,11 @@ namespace assessment_backend_aspdotnet.Managers.SubjectManager
             };
         }
 
-        public async Task<BaseResponse<List<SubjectResponseDto>>> GetAllSubjects()
+        public async Task<BaseResponse<PaginatedSubjectResponseDto>> GetAllSubjects(string? code, int? pageNo, int? pageSize)
         {
-            List<SubjectResponseDto> responseData = await _subjectRepository.GetAllSubjects();
+            PaginatedSubjectResponseDto responseData = await _subjectRepository.GetAllSubjects(code, pageNo, pageSize);
 
-            return new BaseResponse<List<SubjectResponseDto>>
+            return new BaseResponse<PaginatedSubjectResponseDto>
             {
                 Success = true,
                 Message = "Subjects Received",

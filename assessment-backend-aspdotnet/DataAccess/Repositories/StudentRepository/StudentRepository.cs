@@ -58,11 +58,30 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.StudentRepository
             return true;
         }
 
-        public async Task<List<StudentResponseDto>> GetAllStudents()
+        public async Task<PaginatedStudentResponseDto> GetAllStudents(string? name, int? pageNo, int? pageSize)
         {
-            List<Student> data = await _dbContext.Students.ToListAsync<Student>();
-            
-            return _mapper.Map<List<StudentResponseDto>>(data);
+            int totalMatching = await _dbContext.Students
+                .Where(s => string.IsNullOrWhiteSpace(name) || s.Name.Contains(name.Trim()))
+                .CountAsync<Student>();
+
+            int totalPages = totalMatching == 0 ? 0 :
+                ((pageNo.HasValue && pageSize.HasValue) ? (int)Math.Ceiling((decimal)(totalMatching / pageSize)) : 1);
+
+            List<Student> data = await _dbContext.Students
+                .Where(s => string.IsNullOrWhiteSpace(name) || s.Name.Contains(name.Trim()))
+                .Skip((int)((pageNo.HasValue && pageSize.HasValue) ? (pageNo - 1) * pageSize : 0))
+                .Take((int)((pageNo.HasValue && pageSize.HasValue) ? pageSize : totalMatching))
+                .ToListAsync<Student>();
+
+            PaginatedStudentResponseDto responseObj = new PaginatedStudentResponseDto()
+            {
+                TotalPages = totalPages,
+                PageNo = pageNo ?? 1,
+                PageSize = pageSize ?? totalMatching,
+                Data = _mapper.Map<List<StudentResponseDto>>(data)
+            };
+
+            return responseObj;
         }
 
         public async Task<StudentResponseDto?> GetStudentById(int id)

@@ -9,7 +9,7 @@ namespace assessment_backend_aspdotnet.Interfaces.ManagerInterfaces
         Task<BaseResponse<StudentResponseDto>> AddStudent(StudentDto student);
         Task<BaseResponse<StudentResponseDto>> UpdateStudent(int id, StudentDto student);
         Task<BaseResponse<bool>> DeleteStudentById(int id);
-        Task<BaseResponse<List<StudentResponseDto>>> GetAllStudents();
+        Task<BaseResponse<PaginatedStudentResponseDto>> GetAllStudents(string? name, int? pageNo, int? pageSize);
         Task<BaseResponse<StudentResponseDto>> GetStudentById(int id);
 
     }

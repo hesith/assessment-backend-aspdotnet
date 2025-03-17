@@ -96,11 +96,13 @@ namespace assessment_backend_aspdotnet.Managers.ClassManager
             };
         }
 
-        public async Task<BaseResponse<List<ClassResponseDto>>> GetAllClasses()
+        public async Task<BaseResponse<PaginatedClassResponseDto>> GetAllClasses(string? name, int? pageNo, int? pageSize)
         {
-            List<ClassResponseDto> responseData = await _classRepository.GetAllClasses();
+            string nameFilter = name ?? string.Empty;
 
-            return new BaseResponse<List<ClassResponseDto>>
+            PaginatedClassResponseDto responseData = await _classRepository.GetAllClasses(name, pageNo, pageSize);
+
+            return new BaseResponse<PaginatedClassResponseDto>
             {
                 Success = true,
                 Message = "Classes Received",

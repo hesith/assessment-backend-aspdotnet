@@ -64,10 +64,30 @@ namespace assessment_backend_aspdotnet.DataAccess.Repositories.ClassRepository
             return convDbObj;
         }
 
-        public async Task<List<ClassResponseDto>> GetAllClasses()
+        public async Task<PaginatedClassResponseDto> GetAllClasses(string? name, int? pageNo, int? pageSize)
         {
-            List<Class> data = await _dbContext.Classes.ToListAsync<Class>();
-            return _mapper.Map<List<ClassResponseDto>>(data);
+            int totalMatching = await _dbContext.Classes
+                .Where(c => string.IsNullOrWhiteSpace(name) || c.Name.Contains(name.Trim()))
+                .CountAsync<Class>();
+
+            int totalPages = totalMatching==0 ? 0 : 
+                ((pageNo.HasValue && pageSize.HasValue) ? (int)Math.Ceiling((decimal)(totalMatching / pageSize)) : 1);
+
+            List<Class> data = await _dbContext.Classes
+                .Where(c => string.IsNullOrWhiteSpace(name) || c.Name.Contains(name.Trim()))
+                .Skip((int)((pageNo.HasValue && pageSize.HasValue) ? (pageNo-1) * pageSize : 0))
+                .Take((int)((pageNo.HasValue && pageSize.HasValue) ? pageSize : totalMatching))
+                .ToListAsync<Class>();
+
+            PaginatedClassResponseDto responseObj = new PaginatedClassResponseDto()
+            {
+                TotalPages = totalPages,
+                PageNo = pageNo ?? 1,
+                PageSize = pageSize ?? totalMatching,
+                Data = _mapper.Map<List<ClassResponseDto>>(data)
+            };
+
+            return responseObj;
         }
     }
 }

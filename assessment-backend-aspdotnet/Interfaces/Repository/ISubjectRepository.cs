@@ -10,7 +10,7 @@ namespace assessment_backend_aspdotnet.Interfaces.Repository
         Task<SubjectDto> UpdateSubject(int id, SubjectDto cls);
         Task<bool> DeleteSubjectById(int id);
         Task<SubjectResponseDto?> GetSubjectById(int id);
-        Task<List<SubjectResponseDto>> GetAllSubjects();
+        Task<PaginatedSubjectResponseDto> GetAllSubjects(string? code, int? pageNo, int? pageSize);
 
 
     }
